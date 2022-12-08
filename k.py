@@ -20,8 +20,6 @@ def generate_random_vectors():
     """
     for i in range(100):
         vectors.append((random.uniform(0, 25), random.uniform(0, 25)))
-     
-        
         
     return vectors
     

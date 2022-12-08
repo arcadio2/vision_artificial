@@ -3,7 +3,10 @@ from matplotlib import pyplot as plt
 from  Kmeans import *
 
 
-def resolver_determinante(a1,b1,a2,b2):
+def producto_cruz(p1,p2):
+    a1,b1,c1 = p1
+    a2,b2,c2 = p2
+
     x = b1*1 - b2*1 #c2,c1
     y = -(a1*1-a2*1)
     z = a1*b2 - a2*b1
@@ -18,8 +21,9 @@ def puntos_lineas(a,b,c,inicio=-100,final=100,saltos=10):
     x = np.array(range(inicio,final))/saltos
     if(inicio>final):
         x = np.array(range(final,inicio))/saltos
-        
-    y = a*x +b*x + c 
+    #0 = ax +by +z
+    y = (-c-a*x)/b
+    #y = a*x +b*x + c 
     print(y)
     return (list(x),list(y))
     #tomamos 100 valores
@@ -33,8 +37,12 @@ def interseccion_lineas():
     a2 = int(input("Ingrese a2: "))
     b2 = int(input("Ingrese b2: "))
 
-    x,y,z = resolver_determinante(a1,b1,a2,b2)
+    l1 = (a1,b1,1)
+    l2 = (a2,b2,1)
+
+    x,y,z = producto_cruz(l1,l2)
     print(x,y,z)
+    #ax+by+z=0, y = -z/
     
     x1,y1 = puntos_lineas(a1,b1,1)
     x2,y2 = puntos_lineas(a2,b2,1)
@@ -46,8 +54,6 @@ def interseccion_lineas():
 
     plt.show()
 
-    
-    pass
 
 def linea_entre_2_puntos():
     print("Seleccione las cooordenadas del punto 1")
@@ -58,13 +64,15 @@ def linea_entre_2_puntos():
     a2 = int(input("Ingrese a2: "))
     b2 = int(input("Ingrese b2: "))
 
-    x,y,z = resolver_determinante(a1,b1,a2,b2)
+    m1 = (a1,b1,1)
+    m2 = (a2,b2,1)
+
+    x,y,z = producto_cruz(m1,m2)
     if(b2>b1):
-        print("ddddshbsahjsabjhbds")
-        x,y,z = resolver_determinante(a2,b2,a1,b1)
+        x,y,z = producto_cruz(m2,m1)
     print(x,y)
 
-    x1,y1 = puntos_lineas(x,y,1,a1,a2,1)
+    x1,y1 = puntos_lineas(x,y,1,a1,a2+1,1)
     print(x1,y1)
     print("PUNTO 1",a1,b1)
     print("PUNTO 2",a2,b2)
@@ -119,7 +127,7 @@ def crear_imagenes(coordenadas,imagen):
         imagenes.append(imagen)
     for imagen in imagenes:
         #grises = ArcadioCv.rgb_to_grises(imagen)
-        imagen_cruces, imagen_delta,imagen_log = ArcadioCv.filtro_log(imagen,5,1)
+        imagen_cruces, imagen_delta,imagen_final,imagen_log = ArcadioCv.filtro_log(imagen,5,1)
         ArcadioCv.visualizar_imagen(imagen_log)
 
 
@@ -130,7 +138,7 @@ def crear_imagenes(coordenadas,imagen):
 def k_means():
     K = int(input("Ingresa el numero de k: "))
     #cielo.webp
-    imagen_agrupada,coordenadas = Kmeans.k_means("carta_c.png",K)
+    imagen_agrupada,coordenadas = Kmeans.k_means("cielo.webp",K)
     
     print(imagen_agrupada)
 

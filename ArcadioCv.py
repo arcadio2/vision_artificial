@@ -143,8 +143,10 @@ class ArcadioCv:
         ArcadioCv.visualizar_imagen(imagen_log)
         #convol = cv2.filter2D(imagen, -1, kernel)
         delta = float(input("Ingresa el tamaño de delta: "))
-        bordeada = ArcadioCv.cruce_por_cero(imagen_log,delta)
-        return bordeada
+        imagen_cruces, imagen_delta,imagen_final  = ArcadioCv.cruce_por_cero(imagen_log,delta)
+
+        return imagen_cruces, imagen_delta,imagen_final,imagen_log
+
     def filtro_gauss(imagen,tam_kernel = 3,sigma=1):
         kernel = ArcadioCv.kernel_gaussiano(tam_kernel,sigma)
         exceso = int((tam_kernel-1)/2)
